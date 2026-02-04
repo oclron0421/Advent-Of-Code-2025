@@ -36,6 +36,41 @@ def main():
 
     print(f"Part 1: {totalJoltage}")
 
+    # part 2
+    batteries = []
+    try:
+        with open(filename, "r") as file:
+            for line in file:
+                batteriesString = line.strip()
+                batteries.append([int(char) for char in batteriesString])
+    except FileNotFoundError:
+        print(f"Error: The file at {filename} was not found.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+    print(f"Batteries for Part 2: {batteries}")
+    count = 0
+    for batterySet in batteries:
+        currentPos = 0
+        result = []
+        for i in range(12):
+            remainingToPick = 12 - i
+            end = len(batterySet) - remainingToPick + 1
+
+            currentWindow = batterySet[currentPos:end]
+            print(f"Current window: {currentWindow} from pos {currentPos} to {end}")
+            maxDigit = max(currentWindow)
+            maxIndex = currentWindow.index(maxDigit)
+
+            result.append(maxDigit)
+            currentPos += maxIndex + 1
+        print(f"Resulting battery set: {result}")
+        # make a new number from result
+        newNumber = int("".join(str(digit) for digit in result))
+        count += newNumber
+
+    print(f"Part 2: {count}")
+
 
 if __name__ == "__main__":
     main()
